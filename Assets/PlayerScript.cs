@@ -123,7 +123,7 @@ public class PlayerScript : MonoBehaviour
                     curCharge -= Time.deltaTime * 3;
             }
 
-            if(Input.GetButtonUp(attack) && !wallHanging)
+            if(Input.GetButtonUp(attack))
             {
                 Attack();
             }

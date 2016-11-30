@@ -57,7 +57,7 @@ public class Ball : MonoBehaviour
         Vector2 returnVector = transform.position - playerPosition;
         returnVector.Normalize();
 
-        particles.transform.rotation = Quaternion.LookRotation(-returnVector);
+        particles.transform.rotation = Quaternion.LookRotation(returnVector);
         particles.Play();
 
         //float velocityScale = m_velocityHitScale;
