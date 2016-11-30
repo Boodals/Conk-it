@@ -22,6 +22,44 @@ public class PlayerScript : MonoBehaviour
     public string hInput, vInput, jump, attack;
 
     float attackTime = 0;
+    float deathTimer = 0;
+
+    Vector3 scale;
+
+
+
+
+
+    public void Die()
+    {
+        transform.localScale = Vector3.zero;
+        deathTimer = 5;
+    }
+
+    void HandleDeath()
+    {
+        transform.position = new Vector3(0, 15, 0);
+        rb.velocity = Vector3.zero;
+
+        deathTimer -= Time.deltaTime;
+
+        if (deathTimer <= 0)
+        {
+            //spawn me back
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Use this for initialization
     void Start()
@@ -32,11 +70,31 @@ public class PlayerScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         attackCollider.enabled = false;
+
+        scale = transform.localScale;
+        transform.localScale = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(deathTimer>0)
+        {
+            HandleDeath();
+            return;
+        }
+        else
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, scale, 8 * Time.deltaTime);
+        }
+
+        if(transform.position.y < -12)
+        {
+            Die();
+        }
+
+        ///////////////////
+
         grounded = CheckGrounded();
 
         if (grounded || wallHanging)
@@ -55,7 +113,7 @@ public class PlayerScript : MonoBehaviour
                 curCharge += Time.deltaTime;
             }
 
-            if(Input.GetButtonUp(attack))
+            if(Input.GetButtonUp(attack) && !wallHanging)
             {
                 Attack();
             }
@@ -106,7 +164,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (col.gameObject == gameObject)
             return;
-        if (col.gameObject.CompareTag("Default"))
+        if (col.gameObject.CompareTag("Untagged"))
             return;
 
         Debug.Log(col.gameObject.name + " hit");
@@ -120,7 +178,7 @@ public class PlayerScript : MonoBehaviour
 
         if (!wallHanging)
         {
-            rb.AddForce(movement * (movementSpeed - curCharge*0.5f) * Time.deltaTime, ForceMode2D.Impulse);
+            rb.AddForce(movement * (movementSpeed - curCharge*0.95f) * Time.deltaTime, ForceMode2D.Impulse);
             ManageMaxSpeed();
         }
         else

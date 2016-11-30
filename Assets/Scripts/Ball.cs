@@ -10,6 +10,9 @@ public class Ball : MonoBehaviour
     public float m_hitSpeed;
     public float m_maxSpeed;
 
+    //reference to manager
+    public BallManager m_manager;
+
     private Rigidbody2D m_rb;
     private float m_pauseEndTime;
     private bool m_paused;
@@ -115,5 +118,9 @@ public class Ball : MonoBehaviour
  
     }
 
+    public void Kill()
+    {
+        m_manager.Kill(gameObject);
+    }
 
 }
