@@ -179,9 +179,10 @@ public class PlayerScript : MonoBehaviour
         if (col.gameObject.CompareTag("Untagged"))
             return;
 
-        if(col.gameObject.GetComponent<Ball>())
+        Ball victimBall = col.gameObject.GetComponent<Ball>();
+        if(victimBall)
         {
-            col.gameObject.GetComponent<Ball>().Hit(transform.position, 0.2f + curCharge * 0.8f);
+            victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
         }
 
         Debug.Log(col.gameObject.name + " hit");
