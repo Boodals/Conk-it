@@ -22,6 +22,45 @@ public class PlayerScript : MonoBehaviour
     public string hInput, vInput, jump, attack;
 
     float attackTime = 0;
+    float deathTimer = 0;
+
+    Vector3 scale;
+
+    public int myPlayerID;
+
+
+
+    public void Die()
+    {
+        transform.localScale = Vector3.zero;
+        deathTimer = 5;
+    }
+
+    void HandleDeath()
+    {
+        transform.position = new Vector3(0, 15, 0);
+        rb.velocity = Vector3.zero;
+
+        deathTimer -= Time.deltaTime;
+
+        if (deathTimer <= 0)
+        {
+            //spawn me back
+            SpawnManager.singleton.respawnMe(myPlayerID);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Use this for initialization
     void Start()
@@ -32,11 +71,31 @@ public class PlayerScript : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         attackCollider.enabled = false;
+
+        scale = transform.localScale;
+        transform.localScale = Vector3.zero;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(deathTimer>0)
+        {
+            HandleDeath();
+            return;
+        }
+        else
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, scale, 8 * Time.deltaTime);
+        }
+
+        if(transform.position.y < -12)
+        {
+            Die();
+        }
+
+        ///////////////////
+
         grounded = CheckGrounded();
 
         if (grounded || wallHanging)
@@ -55,11 +114,14 @@ public class PlayerScript : MonoBehaviour
                 curCharge += Time.deltaTime;
             }
 
-            if(Input.GetButtonUp(attack))
+            if(Input.GetButtonUp(attack) && !wallHanging)
             {
                 Attack();
             }
         }
+
+        curCharge = Mathf.Clamp(curCharge, 0, 1);
+        myMesh.transform.localScale = Vector3.Lerp(myMesh.transform.localScale, Vector3.one * (curCharge+1), 8 * Time.deltaTime);
 
         //If I'm spinning right now...
         if(attackTime>0)
@@ -80,7 +142,16 @@ public class PlayerScript : MonoBehaviour
 
     void Attack()
     {
-        attackTime = 1;
+        if (attackTime > 0)
+            return;
+
+        //Debug.Break();
+
+        attackCollider.radius = 1f + curCharge*0.85f;
+
+        myMesh.transform.localScale *= 2;
+        attackTime = 0.5f + curCharge*0.5f;
+        curCharge = 0;
     }
 
     void Jump()
@@ -106,8 +177,14 @@ public class PlayerScript : MonoBehaviour
     {
         if (col.gameObject == gameObject)
             return;
-        if (col.gameObject.CompareTag("Default"))
+        if (col.gameObject.CompareTag("Untagged"))
             return;
+
+        Ball victimBall = col.gameObject.GetComponent<Ball>();
+        if(victimBall)
+        {
+            victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
+        }
 
         Debug.Log(col.gameObject.name + " hit");
     }
@@ -120,12 +197,12 @@ public class PlayerScript : MonoBehaviour
 
         if (!wallHanging)
         {
-            rb.AddForce(movement * (movementSpeed - curCharge*0.5f) * Time.deltaTime, ForceMode2D.Impulse);
+            rb.AddForce(movement * (movementSpeed - curCharge*35) * Time.deltaTime, ForceMode2D.Impulse);
             ManageMaxSpeed();
         }
         else
         {
-            rb.velocity = -Vector3.up * Time.deltaTime * 0.2f;
+            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.one*3, 1.2f * Time.deltaTime);
         }
 
         if (grounded && movement.magnitude<0.2f)

@@ -26,7 +26,7 @@ public class GoalManagerScript : MonoBehaviour
         {
             myScore++;
             HUDScript.singleton.UpdateScore(myScore, myID);
-            collider.gameObject.SetActive(false);
+            collider.gameObject.GetComponent<Ball>().Kill();
         }
     }
 }

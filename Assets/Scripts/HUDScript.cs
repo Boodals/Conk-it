@@ -62,7 +62,7 @@ public class HUDScript : MonoBehaviour
     {
         if(playerID == 1)
         {
-            p1Score = score;
+            p2Score = score;
 
             if(p1Score > 15)
             {
@@ -71,7 +71,7 @@ public class HUDScript : MonoBehaviour
         }
         else if(playerID == 2)
         {
-            p2Score = score;
+            p1Score = score;
 
             if (p2Score > 15)
             {
@@ -127,5 +127,15 @@ public class HUDScript : MonoBehaviour
                 winnerTxt.text = "Draw";
                 break;
         }
+    }
+
+    public void ResetHUD()
+    {
+        //incase we don't reload the scene
+        p1Score = 0;
+        p2Score = 0;
+        beginPos = background.transform.localPosition;
+        refreshHUD = true;
+        gameOver = false;
     }
 }

@@ -3,44 +3,35 @@ using System.Collections;
 
 public class SpawnManager : MonoBehaviour {
 
-    Transform respawnLocation;
-    GameObject objectToRespawn;
+    public static SpawnManager singleton;
+
+    public GameObject player1;
+    public GameObject player2;
+    public Transform player1RespawnLocation;
+    public Transform player2RespawnLocation;
 
     public float respawnTimer;
-    float currentTimer;
-
-    bool respawning;
 
 	// Use this for initialization
 	void Start () {
-        respawning = false;
+        singleton = this;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (respawning == true)
-        {        
-            objectToRespawn.SetActive(false);
-            objectToRespawn.transform.position = respawnLocation.position;
 
-            currentTimer += Time.deltaTime;
-
-            if (currentTimer >= respawnTimer)
-            {
-                objectToRespawn.SetActive(true);
-
-                respawning = false;
-
-                currentTimer = 0.0f;
-            }          
-        }
 	}
 
-    void respawnObject(GameObject respawningObject, Transform respawningLocation)
+    public void respawnMe(int playerID)
     {
-        respawning = true;
-
-        objectToRespawn = respawningObject;
-        respawnLocation = respawningLocation;      
+        if (playerID == 1)
+        {
+            player1.transform.position = player1RespawnLocation.position;
+            
+        }
+        else
+        {  
+            player2.transform.position = player2RespawnLocation.position;
+        }
     }
 }

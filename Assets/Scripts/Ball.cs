@@ -10,6 +10,9 @@ public class Ball : MonoBehaviour
     public float m_hitSpeed;
     public float m_maxSpeed;
 
+    //reference to manager
+    public BallManager m_manager;
+
     private Rigidbody2D m_rb;
     private float m_pauseEndTime;
     private bool m_paused;
@@ -55,6 +58,8 @@ public class Ball : MonoBehaviour
         float speed = m_hitSpeed + ((m_maxSpeed - m_hitSpeed) * power);
         m_rb.velocity = returnVector * speed;
 
+        Debug.Log("hittin' ball");
+
         Pause();
     }
 
@@ -69,7 +74,7 @@ public class Ball : MonoBehaviour
         float durationScale = m_pauseVelocityTimeScale * m_rb.velocity.magnitude;
         m_pauseEndTime = m_pauseStartTime + (m_initialPauseDuration * durationScale);
 
-        Debug.Log("current time: " + m_pauseStartTime  + "  end time: " + m_pauseEndTime);
+
         Time.timeScale = 0;
     }
 
@@ -115,5 +120,14 @@ public class Ball : MonoBehaviour
  
     }
 
+    public void Kill()
+    {
+        m_manager.Kill(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (collider.tag == "Wall") Kill();
+    }
 
 }
