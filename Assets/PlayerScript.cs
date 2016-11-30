@@ -194,7 +194,7 @@ public class PlayerScript : MonoBehaviour
         Ball victimBall = col.gameObject.GetComponent<Ball>();
         if(victimBall)
         {
-            CameraScript.singleton.Hit(rb.velocity.normalized, curCharge + 0.1f);
+            CameraScript.singleton.Hit(rb.velocity.normalized, curCharge + 0.91f);
             victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
         }
 
@@ -214,7 +214,7 @@ public class PlayerScript : MonoBehaviour
 
         if (!wallHanging)
         {
-            rb.AddForce(movement * (movementSpeed - curCharge*35) * Time.deltaTime, ForceMode2D.Impulse);
+            rb.AddForce(movement * (movementSpeed - curCharge*85) * Time.deltaTime, ForceMode2D.Impulse);
             ManageMaxSpeed();
         }
         else
