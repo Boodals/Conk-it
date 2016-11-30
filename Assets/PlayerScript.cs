@@ -117,6 +117,11 @@ public class PlayerScript : MonoBehaviour
             {
                 curCharge += Time.deltaTime;
             }
+            else
+            {
+                if (curCharge > 0)
+                    curCharge -= Time.deltaTime * 3;
+            }
 
             if(Input.GetButtonUp(attack) && !wallHanging)
             {
