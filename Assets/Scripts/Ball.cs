@@ -62,7 +62,7 @@ public class Ball : MonoBehaviour
 
         //m_rb.velocity = returnVector * velocityScale * m_rb.velocity.magnitude;
 
-
+        
         float speed = m_hitSpeed + ((m_maxSpeed - m_hitSpeed) * power);
 
 		Debug.Log(speed + ", " + power);
