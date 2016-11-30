@@ -6,7 +6,7 @@ public class PlayerScript : MonoBehaviour
     public enum PlayerStates { Normal, Charging, Attacking}
     public PlayerStates currentState = PlayerStates.Normal;
 
-    float movementSpeed = 38.0f;
+    public float movementSpeed = 88.0f;
 
     public bool grounded = false;
     public float curCharge = 0;
@@ -33,7 +33,7 @@ public class PlayerScript : MonoBehaviour
     public void Die()
     {
         transform.localScale = Vector3.zero;
-        deathTimer = 5;
+        deathTimer = 3;
     }
 
     void HandleDeath()
@@ -203,7 +203,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.one*3, 1.2f * Time.deltaTime);
+            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.one*0.9f, 4.2f * Time.deltaTime);
         }
 
         if (grounded && movement.magnitude<0.2f)
