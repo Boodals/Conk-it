@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour
     public float m_hitSpeed;
     public float m_maxSpeed;
 
+    public float m_scaleDuration;
     //reference to manager
     public BallManager m_manager;
 
@@ -18,7 +19,8 @@ public class Ball : MonoBehaviour
     private bool m_paused;
     private bool m_prevPaused;
 
-    float m_curPower;
+    private float m_scaleTimer;
+    private bool m_scaling;
     public bool PausedThisFrame()
     {
         return m_paused && !m_prevPaused;
@@ -36,6 +38,10 @@ public class Ball : MonoBehaviour
     {
         transform.position = position;
         m_rb.velocity = velocity;
+
+        transform.localScale = new Vector2(0, 0);
+        m_scaleTimer = 0.0f;
+        m_scaling = true;
     }
 
     /// <summary>
@@ -58,9 +64,8 @@ public class Ball : MonoBehaviour
         float speed = m_hitSpeed + ((m_maxSpeed - m_hitSpeed) * power);
         m_rb.velocity = returnVector * speed;
 
-        Debug.Log("hittin' ball");
-
         Pause();
+       
     }
 
     private void Pause()
@@ -89,6 +94,7 @@ public class Ball : MonoBehaviour
         m_rb = GetComponent<Rigidbody2D>();
         m_paused = false;
         m_prevPaused = false;
+        m_scaling = false;
     }
 
 	// Use this for initialization
@@ -107,6 +113,16 @@ public class Ball : MonoBehaviour
         }
 
 
+        if (m_scaling)
+        {
+            m_scaleTimer += Time.deltaTime;
+            float scale = Mathf.Clamp(m_scaleTimer / m_scaleDuration, 0,1);
+           
+            transform.localScale = new Vector2(scale, scale);
+
+            //scaling = false when scale == 1
+            m_scaling = scale != 1;
+        } 
         ////testing
         //if (Input.GetKey(KeyCode.Space))
         //{
