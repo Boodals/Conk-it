@@ -156,7 +156,7 @@ public class PlayerScript : MonoBehaviour
 
     void Jump()
     {
-        float jumpHeight = 26;
+        float jumpHeight = 18;
         Vector3 dir = Vector3.up;
 
         if(wallHanging && hangDelay<=0)
