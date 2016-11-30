@@ -119,6 +119,9 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
+        curCharge = Mathf.Clamp(curCharge, 0, 1);
+        myMesh.transform.localScale = Vector3.Lerp(myMesh.transform.localScale, Vector3.one * (curCharge+1), 8 * Time.deltaTime);
+
         //If I'm spinning right now...
         if(attackTime>0)
         {
@@ -138,7 +141,16 @@ public class PlayerScript : MonoBehaviour
 
     void Attack()
     {
-        attackTime = 1;
+        if (attackTime > 0)
+            return;
+
+        //Debug.Break();
+
+        attackCollider.radius = 1f + curCharge*0.85f;
+
+        myMesh.transform.localScale *= 2;
+        attackTime = 0.5f + curCharge*0.5f;
+        curCharge = 0;
     }
 
     void Jump()
@@ -178,7 +190,8 @@ public class PlayerScript : MonoBehaviour
 
         if (!wallHanging)
         {
-            rb.AddForce(movement * (movementSpeed - curCharge*0.95f) * Time.deltaTime, ForceMode2D.Impulse);
+
+            rb.AddForce(movement * (movementSpeed - curCharge*35) * Time.deltaTime, ForceMode2D.Impulse);
             ManageMaxSpeed();
         }
         else
