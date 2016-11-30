@@ -7,10 +7,13 @@ public class GoalManagerScript : MonoBehaviour
 
     public int myScore;
 
+    AudioSource snd;
+
 	// Use this for initialization
 	void Start ()
     {
         myScore = 0;
+        snd = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -27,7 +30,7 @@ public class GoalManagerScript : MonoBehaviour
             myScore++;
             HUDScript.singleton.UpdateScore(myScore, myID);
             collider.gameObject.GetComponent<Ball>().Kill();
-
+            snd.Play();
             CameraScript.singleton.Goal(collider.gameObject.transform.position);
         }
     }
