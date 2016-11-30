@@ -14,7 +14,7 @@ public class SpawnManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       
+        singleton = this;
 	}
 	
 	// Update is called once per frame
@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour {
 
 	}
 
-    void respawnMe(int playerID)
+    public void respawnMe(int playerID)
     {
         if (playerID == 1)
         {

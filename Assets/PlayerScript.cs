@@ -26,7 +26,7 @@ public class PlayerScript : MonoBehaviour
 
     Vector3 scale;
 
-
+    public int myPlayerID;
 
 
 
@@ -46,6 +46,7 @@ public class PlayerScript : MonoBehaviour
         if (deathTimer <= 0)
         {
             //spawn me back
+            SpawnManager.singleton.respawnMe(myPlayerID);
         }
     }
 
