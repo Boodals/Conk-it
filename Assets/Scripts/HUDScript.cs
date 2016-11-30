@@ -10,6 +10,8 @@ public class HUDScript : MonoBehaviour
     public Text p2ScoreTxt;
     public Image background;
     public Text winnerTxt;
+    public Text restartTxt;
+    public Image restartBg;
 
     public int p1Score;
     public int p2Score;
@@ -50,6 +52,8 @@ public class HUDScript : MonoBehaviour
         {
             winnerTxt.enabled = true;
             background.enabled = true;
+            restartBg.enabled = true;
+            restartTxt.enabled = true;
             DisplayWinner();
             background.transform.localPosition = ((Vector3.up * 1.3f) * Mathf.Sin(Time.time * 2));
 
@@ -58,6 +62,8 @@ public class HUDScript : MonoBehaviour
         {
             winnerTxt.enabled = false;
             background.enabled = false;
+            //restartTxt.enabled = false;
+           // restartBg.enabled = false;
         }
 	}
 
