@@ -156,7 +156,7 @@ public class PlayerScript : MonoBehaviour
 
     void Jump()
     {
-        float jumpHeight = 14;
+        float jumpHeight = 26;
         Vector3 dir = Vector3.up;
 
         if(wallHanging && hangDelay<=0)
@@ -192,7 +192,12 @@ public class PlayerScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector3 movement = new Vector3(Input.GetAxisRaw(hInput), 0, 0);
+        Vector3 movement = new Vector3(Input.GetAxisRaw(hInput), Input.GetAxisRaw(vInput), 0);
+		movement.y = Mathf.Clamp(movement.y, 0, -0.5f);
+
+		if(grounded)
+			movement.y = 0;
+
 
         FindWall(movement);
 
@@ -203,7 +208,7 @@ public class PlayerScript : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.one*0.9f, 4.2f * Time.deltaTime);
+            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.up*0.9f, 4.2f * Time.deltaTime);
         }
 
         if (grounded && movement.magnitude<0.2f)
@@ -216,7 +221,7 @@ public class PlayerScript : MonoBehaviour
     {
         RaycastHit2D hit;
 
-        hit = Physics2D.Raycast(transform.position, direction, 0.7f, LayerMask.GetMask("Default"));
+        hit = Physics2D.CircleCast(transform.position, 0.4f, direction, 0.7f, LayerMask.GetMask("Default"));
 
         if(hangDelay>0)
         {
@@ -260,7 +265,7 @@ public class PlayerScript : MonoBehaviour
     bool CheckGrounded()
     {
         bool cG = false;
-        float distance = 0.08f;
+        float distance = 0.11f;
 
         RaycastHit2D g = Physics2D.BoxCast(transform.position, transform.localScale*0.95f, 0, -Vector3.up, distance, LayerMask.GetMask("Default"));
 
