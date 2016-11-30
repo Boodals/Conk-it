@@ -183,6 +183,7 @@ public class PlayerScript : MonoBehaviour
         Ball victimBall = col.gameObject.GetComponent<Ball>();
         if(victimBall)
         {
+            CameraScript.singleton.Hit(rb.velocity.normalized, curCharge + 0.1f);
             victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
         }
 
