@@ -41,8 +41,9 @@ public class CameraScript : MonoBehaviour {
 
     public void Goal(Vector3 ballPos)
     {
-       //Debug.Break();
+        //Debug.Break();
+        ballPos.y *= 0.2f;
        chromic.chromaticAberration = 15;
-       Hit(ballPos.normalized, 0.9f);
+       Hit(ballPos.normalized, 2);
     }
 }
