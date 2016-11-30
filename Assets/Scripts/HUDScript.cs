@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HUDScript : MonoBehaviour
 {
@@ -30,12 +31,15 @@ public class HUDScript : MonoBehaviour
         beginPos = background.transform.localPosition;
         refreshHUD = true;
         gameOver = false;
-       
+        winner = 0;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+
+        if (winner > 0 && Input.GetButtonDown("Start")) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
 	    if(refreshHUD)
         {
             UpdateHUD();
