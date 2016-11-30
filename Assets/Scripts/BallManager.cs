@@ -58,7 +58,7 @@ public class BallManager : MonoBehaviour
         if (m_balls.getFree(out ball))
         {
             Vector2 direction   = Random.insideUnitCircle;
-            Vector2 spawnOffset = new Vector2(0, 1);
+            Vector2 spawnOffset = new Vector2(0, 0.5f);
             direction += spawnOffset;
             direction.Normalize();
             float   speed       = Random.Range(m_minSpawnSpeed, m_maxSpawnSpeed);
