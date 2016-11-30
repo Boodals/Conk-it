@@ -19,6 +19,9 @@ public class Ball : MonoBehaviour
     private bool m_paused;
     private bool m_prevPaused;
 
+	AudioSource snd;
+    public ParticleSystem particles;
+
     private float m_scaleTimer;
     private bool m_scaling;
     public bool PausedThisFrame()
@@ -54,6 +57,9 @@ public class Ball : MonoBehaviour
         Vector2 returnVector = transform.position - playerPosition;
         returnVector.Normalize();
 
+        particles.transform.rotation = Quaternion.LookRotation(-returnVector);
+        particles.Play();
+
         //float velocityScale = m_velocityHitScale;
         //if (m_rb.velocity.magnitude >= m_speedCap)
         //    velocityScale = 1;
@@ -65,6 +71,9 @@ public class Ball : MonoBehaviour
 
 		Debug.Log(speed + ", " + power);
         m_rb.velocity = returnVector * speed;
+
+		snd.pitch = 1 + power;
+		snd.Play();
 
         Pause();
        
@@ -102,7 +111,7 @@ public class Ball : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-	   
+		snd = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame

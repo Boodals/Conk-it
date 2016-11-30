@@ -47,7 +47,7 @@ public class HUDScript : MonoBehaviour
             winnerTxt.enabled = true;
             background.enabled = true;
             DisplayWinner();
-            background.transform.localPosition = ((Vector3.up * 3) * Mathf.Sin(Time.time * 2));
+            background.transform.localPosition = ((Vector3.up * 1.3f) * Mathf.Sin(Time.time * 2));
 
         }
         else
