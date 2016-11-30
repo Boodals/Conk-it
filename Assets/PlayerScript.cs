@@ -28,6 +28,8 @@ public class PlayerScript : MonoBehaviour
 
     public int myPlayerID;
 
+    public AudioClip jumpSnd, hitSnd;
+    AudioSource snd;
 
 
     public void Die()
@@ -67,6 +69,8 @@ public class PlayerScript : MonoBehaviour
     {
         myMesh = transform.FindChild("Box").gameObject;
         myHand = transform.FindChild("Hand").gameObject;
+
+        snd = GetComponent<AudioSource>();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -136,6 +140,7 @@ public class PlayerScript : MonoBehaviour
         else
         {
             attackCollider.enabled = false;
+            curCharge = 0;
             myMesh.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
@@ -151,13 +156,15 @@ public class PlayerScript : MonoBehaviour
 
         myMesh.transform.localScale *= 2;
         attackTime = 0.5f + curCharge*0.5f;
-        curCharge = 0;
+        
     }
 
     void Jump()
     {
         float jumpHeight = 26;
         Vector3 dir = Vector3.up;
+
+        snd.PlayOneShot(jumpSnd);
 
         if(wallHanging && hangDelay<=0)
         {
@@ -184,7 +191,8 @@ public class PlayerScript : MonoBehaviour
         if(victimBall)
         {
             CameraScript.singleton.Hit(rb.velocity.normalized, curCharge + 0.1f);
-            victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
+            victimBall.Hit(transform.position, 0.2f + (curCharge * 0.8f));
+            snd.PlayOneShot(hitSnd);
         }
 
         Debug.Log(col.gameObject.name + " hit");
