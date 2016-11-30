@@ -20,6 +20,7 @@ public class Ball : MonoBehaviour
     private bool m_prevPaused;
 
 	AudioSource snd;
+    public ParticleSystem particles;
 
     private float m_scaleTimer;
     private bool m_scaling;
@@ -55,6 +56,9 @@ public class Ball : MonoBehaviour
     {
         Vector2 returnVector = transform.position - playerPosition;
         returnVector.Normalize();
+
+        particles.transform.rotation = Quaternion.LookRotation(-returnVector);
+        particles.Play();
 
         //float velocityScale = m_velocityHitScale;
         //if (m_rb.velocity.magnitude >= m_speedCap)
