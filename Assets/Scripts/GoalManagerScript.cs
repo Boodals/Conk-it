@@ -28,7 +28,7 @@ public class GoalManagerScript : MonoBehaviour
             HUDScript.singleton.UpdateScore(myScore, myID);
             collider.gameObject.GetComponent<Ball>().Kill();
 
-            CameraScript.singleton.Goal();
+            CameraScript.singleton.Goal(collider.gameObject.transform.position);
         }
     }
 }

@@ -47,7 +47,7 @@ public class HUDScript : MonoBehaviour
             winnerTxt.enabled = true;
             background.enabled = true;
             DisplayWinner();
-            background.transform.localPosition = ((Vector3.up * 8) * Mathf.Sin(Time.time * 2));
+            background.transform.localPosition = ((Vector3.up * 3) * Mathf.Sin(Time.time * 2));
 
         }
         else
@@ -83,6 +83,16 @@ public class HUDScript : MonoBehaviour
 
     void UpdateHUD()
     {
+        if (p1Score > 15)
+        {
+            p1Score = 15;
+        }
+
+        if (p2Score > 15)
+        {
+            p2Score = 15;
+        }
+
         p1ScoreTxt.text = "" + p1Score;
         p2ScoreTxt.text = "" + p2Score;
         refreshHUD = false;
