@@ -4,16 +4,16 @@ using System.Collections;
 public class EnvDisappear : MonoBehaviour
 {
 
-	//Set to false to completely disable the timing, then use Activate(), Deactivate(), SetActive(bool), and Transition() to set its state
+	[Tooltip("Set to false to completely disable the timing, then use Activate(), Deactivate(), and SetActive(bool) to set its state")]
 	public bool autoTimer = true;
 
-	//Use this to offset the initial cycle
+	[Tooltip("Use this to offset the initial cycle")]
 	public float initialTimer = 0f;
 
-	//Stay active for 3 seconds
+	[Tooltip("Stay active for 3 seconds")]
 	public float visibleTime = 3f;
 
-	//Then disappear for 5 seconds, total cycle time will be 8 seconds
+	[Tooltip("Then disappear for 5 seconds, total cycle time will be 8 seconds")]
 	public float invisibleTime = 5f;
 
 	//Returns visibleTime + invisibleTime
@@ -25,20 +25,26 @@ public class EnvDisappear : MonoBehaviour
 		}
 	}
 
-	//Time it plays a flashing effect to show that its about to disappear
-	public float transitionTime = 0.5f;
+	[Tooltip("Time it plays a flashing effect to show that its about to disappear")]
+	public float transitionTime = 1f;
 
-	//Rate it flashes at the start of the transition
-	public float transitionSpeedInitial = 0.05f;
+	[Tooltip("Rate it flashes at the start of the transition")]
+	public float transitionSpeedInitial = 0.1f;
 
-	//Rate it flashes at the end of the transition
-	public float transitionSpeedEnd = 0.025f;
+	[Tooltip("Rate it flashes at the end of the transition")]
+    public float transitionSpeedEnd = 0.025f;
 
-	//Set to false to make it cycle once
+	[Tooltip("Set to false to make it cycle once")]
 	public bool looping = true;
 
-	//If not looping: this states whether it goes visible at the end of the cycle or not
+	[Tooltip("If not looping: this states whether it goes visible at the end of the cycle or not")]
 	public bool endVisibility = false;
+
+	[Tooltip("The components that will be enabled and disabled when the platform appears and disappears")]
+	public Behaviour[] componentsToSetEnabled;
+
+	[Tooltip("The renderers that will be enabled and disabled when the platform appears, disappears, and flashes")]
+	public Renderer[] renderersToSetEnabled;
 
 
 	//Whether or not it is currently active
@@ -73,7 +79,7 @@ public class EnvDisappear : MonoBehaviour
 			return;
 		}
 
-		Debug.Log("StartCycle");
+		//Debug.Log("StartCycle");
 
 		isPaused = false;
 		isInCycle = true;
@@ -105,7 +111,7 @@ public class EnvDisappear : MonoBehaviour
 
 	public void StopCycle()
 	{
-		Debug.Log("StopCycle");
+		//Debug.Log("StopCycle");
 
 		isPaused = true;
 		isInCycle = false;
@@ -157,15 +163,6 @@ public class EnvDisappear : MonoBehaviour
 		else
 		{
 			SetDeactivated();
-		}
-	}
-
-	public void Transition()
-	{
-		if(autoTimer)
-		{
-			Debug.LogError("Cant use Transition when the auto timer is enabled. Use StartCycle(), PauseCycle(), StopCycle(), ResetCycle() instead.");
-			return;
 		}
 	}
 
@@ -246,7 +243,10 @@ public class EnvDisappear : MonoBehaviour
 						if(Time.time > lastFlashTime + flashSpeed)
 						{
 							//Do a flash
-							GetComponent<MeshRenderer>().enabled = !GetComponent<MeshRenderer>().enabled;
+							foreach(Renderer renderer in renderersToSetEnabled)
+							{
+								renderer.enabled = !renderer.enabled;
+							}
 
 							lastFlashTime = Time.time;
                         }
@@ -258,17 +258,31 @@ public class EnvDisappear : MonoBehaviour
 
 	private void SetActivated()
 	{
-		Debug.Log("Set Activated");
+		//Debug.Log("Set Activated");
 
 		isActive = true;
-		GetComponent<MeshRenderer>().enabled = true;
+		foreach(Behaviour component in componentsToSetEnabled)
+		{
+			component.enabled = true;
+		}
+		foreach(Renderer renderer in renderersToSetEnabled)
+		{
+			renderer.enabled = true;
+		}
 	}
 
 	private void SetDeactivated()
 	{
-		Debug.Log("Set Deactivated");
+		//Debug.Log("Set Deactivated");
 
 		isActive = false;
-		GetComponent<MeshRenderer>().enabled = false;
-    }
+		foreach(Behaviour component in componentsToSetEnabled)
+		{
+			component.enabled = false;
+		}
+		foreach(Renderer renderer in renderersToSetEnabled)
+		{
+			renderer.enabled = false;
+		}
+	}
 }

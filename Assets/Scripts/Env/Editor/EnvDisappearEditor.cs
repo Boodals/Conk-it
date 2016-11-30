@@ -44,9 +44,5 @@ public class EnvDisappearEditor : Editor
 		{
 			dis.Deactivate();
 		}
-		if(GUILayout.Button("Transition"))
-		{
-			dis.Transition();
-		}
 	}
 }
