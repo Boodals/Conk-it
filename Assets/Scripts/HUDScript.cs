@@ -10,9 +10,8 @@ public class HUDScript : MonoBehaviour
     public Image background;
     public Text winnerTxt;
 
-
-    int p1Score;
-    int p2Score;
+    public int p1Score;
+    public int p2Score;
     bool refreshHUD;
     int winner; //P1WIN: winner = 1, P2WIN: winner = 2, DRAW: winner = 3;
     bool gameOver;

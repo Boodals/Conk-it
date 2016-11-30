@@ -7,10 +7,10 @@ public class BallManager : MonoBehaviour
     public float        m_maxSpawnSpeed;
     public GameObject   m_prefab;
     public int          m_numBalls;
-
-
-    private GameObjectPool m_balls;
-
+    public int          m_levelStep;
+    
+    private GameObjectPool  m_balls;
+    private int             m_prevScore;
     public void Kill(GameObject ball)
     {
         m_balls.dissable(ball);
@@ -38,8 +38,19 @@ public class BallManager : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-	    //add more?
-	}
+        int score = HUDScript.singleton.p1Score > HUDScript.singleton.p2Score ? HUDScript.singleton.p1Score : HUDScript.singleton.p2Score;
+        //score has changed
+        if (score != m_prevScore)
+        {
+            if (score % m_levelStep == 0)
+            {
+                Spawn();
+            }
+        }
+
+
+       m_prevScore = score;
+    }
 
     public void Spawn()
     {
