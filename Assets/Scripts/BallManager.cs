@@ -8,14 +8,17 @@ public class BallManager : MonoBehaviour
     public GameObject   m_prefab;
     public int          m_numBalls;
     public int          m_levelStep;
-    
+    public float        m_spawnDelayDuration;
+
     private GameObjectPool  m_balls;
     private int             m_prevScore;
+
+
     public void Kill(GameObject ball)
     {
         m_balls.dissable(ball);
         //for now spawn a new object when one leaves
-        Spawn();
+        StartCoroutine(DelayedSpawn());
     }
     void Awake()
     {
@@ -32,7 +35,7 @@ public class BallManager : MonoBehaviour
     {
 
         //spawn a ball
-        Spawn();
+        StartCoroutine(DelayedSpawn());
     }
 	
 	// Update is called once per frame
@@ -44,7 +47,7 @@ public class BallManager : MonoBehaviour
         {
             if (score % m_levelStep == 0)
             {
-                Spawn();
+                StartCoroutine(DelayedSpawn());
             }
         }
 
@@ -52,7 +55,13 @@ public class BallManager : MonoBehaviour
        m_prevScore = score;
     }
 
-    public void Spawn()
+
+    private IEnumerator DelayedSpawn()
+    {
+        yield return new WaitForSeconds(m_spawnDelayDuration);
+        Spawn();
+    }
+    private void Spawn()
     {
         GameObject ball = null;
         if (m_balls.getFree(out ball))
