@@ -7,7 +7,9 @@ public class HUDScript : MonoBehaviour
     public static HUDScript singleton;
     public Text p1ScoreTxt;
     public Text p2ScoreTxt;
+    public Image background;
     public Text winnerTxt;
+
 
     int p1Score;
     int p2Score;
@@ -26,7 +28,7 @@ public class HUDScript : MonoBehaviour
     {
         p1Score = 0;
         p2Score = 0;
-        beginPos = winnerTxt.transform.localPosition;
+        beginPos = background.transform.localPosition;
         refreshHUD = true;
         gameOver = false;
        
@@ -44,13 +46,15 @@ public class HUDScript : MonoBehaviour
         if(gameOver)
         {
             winnerTxt.enabled = true;
+            background.enabled = true;
             DisplayWinner();
-            winnerTxt.transform.localPosition = ((Vector3.up * 8) * Mathf.Sin(Time.time * 2));
+            background.transform.localPosition = ((Vector3.up * 8) * Mathf.Sin(Time.time * 2));
 
         }
         else
         {
             winnerTxt.enabled = false;
+            background.enabled = false;
         }
 	}
 
