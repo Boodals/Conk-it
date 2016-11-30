@@ -151,7 +151,7 @@ public class PlayerScript : MonoBehaviour
 
 		//Debug.Break();
 
-		snd.PlayOneShot(spinSnd, 0.8f);
+		snd.PlayOneShot(spinSnd, 0.58f);
         attackCollider.radius = 1f + curCharge*0.85f;
 
         myMesh.transform.localScale *= 2;
