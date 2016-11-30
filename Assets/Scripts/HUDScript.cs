@@ -62,8 +62,8 @@ public class HUDScript : MonoBehaviour
         {
             winnerTxt.enabled = false;
             background.enabled = false;
-            //restartTxt.enabled = false;
-           // restartBg.enabled = false;
+            restartTxt.enabled = false;
+            restartBg.enabled = false;
         }
 	}
 
