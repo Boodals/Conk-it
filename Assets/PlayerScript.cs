@@ -197,13 +197,12 @@ public class PlayerScript : MonoBehaviour
 
         if (!wallHanging)
         {
-
             rb.AddForce(movement * (movementSpeed - curCharge*35) * Time.deltaTime, ForceMode2D.Impulse);
             ManageMaxSpeed();
         }
         else
         {
-            rb.velocity = -Vector3.up * Time.deltaTime * 0.2f;
+            rb.velocity = Vector3.Lerp(rb.velocity, -Vector3.one*3, 1.2f * Time.deltaTime);
         }
 
         if (grounded && movement.magnitude<0.2f)
