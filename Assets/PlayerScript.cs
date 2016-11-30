@@ -36,6 +36,8 @@ public class PlayerScript : MonoBehaviour
 		snd.PlayOneShot(fallSnd);
         transform.localScale = Vector3.zero;
         deathTimer = 3;
+
+		CameraScript.singleton.Hit(-Vector3.up, 1);
     }
 
     void HandleDeath()
