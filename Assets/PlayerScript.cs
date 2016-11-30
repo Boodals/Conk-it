@@ -28,12 +28,12 @@ public class PlayerScript : MonoBehaviour
 
     public int myPlayerID;
 
-    public AudioClip jumpSnd, hitSnd;
-    AudioSource snd;
-
+	public AudioClip jumpSnd, spinSnd, fallSnd;
+	AudioSource snd;
 
     public void Die()
     {
+		snd.PlayOneShot(fallSnd);
         transform.localScale = Vector3.zero;
         deathTimer = 3;
     }
@@ -67,10 +67,10 @@ public class PlayerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+		snd = GetComponent<AudioSource>();
+
         myMesh = transform.FindChild("Box").gameObject;
         myHand = transform.FindChild("Hand").gameObject;
-
-        snd = GetComponent<AudioSource>();
 
         rb = GetComponent<Rigidbody2D>();
 
@@ -140,7 +140,6 @@ public class PlayerScript : MonoBehaviour
         else
         {
             attackCollider.enabled = false;
-            curCharge = 0;
             myMesh.transform.localEulerAngles = new Vector3(0, 0, 0);
         }
     }
@@ -150,21 +149,20 @@ public class PlayerScript : MonoBehaviour
         if (attackTime > 0)
             return;
 
-        //Debug.Break();
+		//Debug.Break();
 
+		snd.PlayOneShot(spinSnd, 0.8f);
         attackCollider.radius = 1f + curCharge*0.85f;
 
         myMesh.transform.localScale *= 2;
         attackTime = 0.5f + curCharge*0.5f;
-        
+        curCharge = 0;
     }
 
     void Jump()
     {
         float jumpHeight = 18;
         Vector3 dir = Vector3.up;
-
-        snd.PlayOneShot(jumpSnd);
 
         if(wallHanging && hangDelay<=0)
         {
@@ -177,6 +175,7 @@ public class PlayerScript : MonoBehaviour
             Debug.Log(dir);
         }
 
+		snd.Play();
         rb.AddForce(dir * jumpHeight, ForceMode2D.Impulse);
     }
 
@@ -191,8 +190,7 @@ public class PlayerScript : MonoBehaviour
         if(victimBall)
         {
             CameraScript.singleton.Hit(rb.velocity.normalized, curCharge + 0.1f);
-            victimBall.Hit(transform.position, 0.2f + (curCharge * 0.8f));
-            snd.PlayOneShot(hitSnd);
+            victimBall.Hit(transform.position, 0.2f + curCharge * 0.8f);
         }
 
         Debug.Log(col.gameObject.name + " hit");
