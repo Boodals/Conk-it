@@ -248,7 +248,7 @@ public class EnvDisappear : MonoBehaviour
 								renderer.enabled = !renderer.enabled;
 							}
 
-							lastFlashTime = Time.time;
+							lastFlashTime += flashSpeed;
                         }
 					}
 				}
